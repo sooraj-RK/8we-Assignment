@@ -1,9 +1,14 @@
 const express = require("express");
 
+
+const mongoose =  require('mongoose');
+
 const cors = require("cors");
 
 require('dotenv').config();
 const bodyParser = require("body-parser");
+
+const connectDB = require( './Mongodb/models/connect.js');
 
 const { Configuration, OpenAIApi } = require("openai");
 
@@ -35,8 +40,13 @@ app.post("/chat", async (req, res) => {
 
 const PORT = 8080;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port: ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    connectDB(process.env.MONGODB_URL);
+    app.listen(8080, () => console.log('Server started on port 8080'));
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-//run node server.js
+startServer();

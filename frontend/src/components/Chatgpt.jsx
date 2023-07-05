@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+
 export default function ChatGPT() {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
@@ -25,13 +26,15 @@ export default function ChatGPT() {
     setPrompt(e.target.value);
   };
 
+  const handleSave = () => {
+    alert("Data saved");
+  };
+
   return (
     <div className="container container-sm p-1">
-      {" "}
       <h1 className="title text-center text-darkGreen">ChatGPT API</h1>
       <form className="form" onSubmit={handleSubmit}>
         <div className="form-group">
-          {/* <a href="vc">Link</a> */}
           <label htmlFor="">Ask questions</label>
           <input
             className="shadow-sm"
@@ -40,16 +43,19 @@ export default function ChatGPT() {
             value={prompt}
             onChange={handlePrompt}
           />
-        </div>{" "}
-        {/* <button className="btn btn-accept w-100" type="submit">
+        </div>
+        <button className="btn btn-accept w-100" type="submit">
           Go
-        </button> */}
+        </button>
       </form>
       <div className="bg-darkGreen  mt-2 p-1 border-5">
         <p className="text-light">
           {response ? response : "Ask me anything..."}
         </p>
       </div>
+      <button className="btn btn-primary w-100 mt-2" onClick={handleSave}>
+        Save to Database
+      </button>
     </div>
   );
 }
