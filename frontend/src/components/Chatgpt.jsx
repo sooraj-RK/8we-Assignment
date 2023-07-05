@@ -4,9 +4,10 @@ import axios from "axios";
 export default function ChatGPT() {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
+  // const [databaseResponse, setDatabaseResponse] = useState(""); 
   const HTTP = "http://localhost:8080/chat";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     axios
@@ -25,16 +26,28 @@ export default function ChatGPT() {
   const handlePrompt = (e) => {
     setPrompt(e.target.value);
   };
+  const handleSaveToMongo = () => {
+    // Send prompt and response to MongoDB
+    axios
+      .post("http://localhost:8080/addDatas", { prompt, response })
 
-  const handleSave = () => {
-    alert("Data saved");
+      
+      .then((res) => {
+        alert("Data saved to MongoDB");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
   };
 
   return (
     <div className="container container-sm p-1">
-      <h1 className="title text-center text-darkGreen">ChatGPT API</h1>
+      {" "}
+      <h1 className="title text-center text-lightGreen">ChatGPT API</h1>
       <form className="form" onSubmit={handleSubmit}>
         <div className="form-group">
+          {/* <a href="vc">Link</a> */}
           <label htmlFor="">Ask questions</label>
           <input
             className="shadow-sm"
@@ -43,7 +56,7 @@ export default function ChatGPT() {
             value={prompt}
             onChange={handlePrompt}
           />
-        </div>
+        </div>{" "}
         <button className="btn btn-accept w-100" type="submit">
           Go
         </button>
@@ -53,8 +66,8 @@ export default function ChatGPT() {
           {response ? response : "Ask me anything..."}
         </p>
       </div>
-      <button className="btn btn-primary w-100 mt-2" onClick={handleSave}>
-        Save to Database
+      <button className="btn btn-primary w-100 mt-2" onClick={handleSaveToMongo}>
+        Save to MongoDB
       </button>
     </div>
   );
